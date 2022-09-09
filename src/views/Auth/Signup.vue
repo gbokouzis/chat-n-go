@@ -7,7 +7,7 @@
                     alt="Your Company" 
                 />
                 <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-                    Sign in to your account
+                    Create your account
                 </h2>
                 <p class="mt-2 text-center text-sm text-gray-600">
                     <!-- Or {{ ' ' }}
@@ -23,7 +23,7 @@
                 <div class="-space-y-px rounded-md shadow-sm">
                     <div class="">
                         <label for="username" class="sr-only">Username</label>
-                        <input v-model="username"
+                        <input v-model="displayName"
                             id="username" name="email" type="username" autocomplete="name" required="" 
                             class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
                             placeholder="Username" 
@@ -63,7 +63,8 @@
                 </div>
         
                 <div>
-                    <button type="submit" 
+                    <button type="submit"
+                        :disabled='isLoading'
                         class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -71,8 +72,19 @@
                                 aria-hidden="true" 
                             />
                         </span>
-                        Sign in
+                        Sign up
                     </button>
+                    <p>
+                        Have an account? 
+                        <router-link :to="{ name: 'Login' }"
+                            class="text-indigo-600 underline"
+                        >
+                            Log in
+                        </router-link>
+                    </p>
+                    <div v-if="error" class="mt-2 text-red-600">
+                        {{ error }}
+                    </div>
                 </div>
             </form>
         </div>
@@ -81,18 +93,21 @@
   
 <script>
 import { ref } from "vue"
+import useSignup from "../../composables/useSignup"
 
 export default {
     setup() {
-        const username = ref('')
+        const { error, isLoading, signup } = useSignup()
+
+        const displayName = ref('')
         const email = ref('')
         const password = ref('')
         
-        const handleSubmit = () => {
-            console.log(username.value, email.value, password.value)
+        const handleSubmit = async () => {
+            await signup(displayName.value, email.value, password.value)
         }
         
-        return { username, email, password, handleSubmit }
+        return { error, isLoading, displayName, email, password, handleSubmit }
     }
 }
 

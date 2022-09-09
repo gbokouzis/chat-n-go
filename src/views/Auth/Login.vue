@@ -56,7 +56,8 @@
                 </div>
         
                 <div>
-                    <button type="submit" 
+                    <button type="submit"
+                        :disabled='isLoading'
                         class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -66,6 +67,17 @@
                         </span>
                         Sign in
                     </button>
+                    <p>
+                        Don't have an account? 
+                        <router-link :to="{ name: 'Signup' }"
+                            class="text-indigo-600 underline"
+                        >
+                            Sign up
+                        </router-link>
+                    </p>
+                    <div v-if="error" class="mt-2 text-red-600">
+                        {{ error }}
+                    </div>
                 </div>
             </form>
         </div>
@@ -74,17 +86,20 @@
 
 <script>
 import { ref } from "vue"
+import useLogin from "../../composables/useLogin"
 
 export default {
     setup() {
+        const { error, isLoading, login } = useLogin()
+
         const email = ref('')
         const password = ref('')
         
-        const handleSubmit = () => {
-            console.log(email.value, password.value)
+        const handleSubmit = async () => {
+            await login(email.value, password.value)
         }
         
-        return { email, password, handleSubmit }
+        return { error, isLoading, email, password, handleSubmit }
     }
 }
 
