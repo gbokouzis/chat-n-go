@@ -9,7 +9,16 @@ const requireAuth = (to, from, next) => {
     } else {
         next()
     }
-  }
+}
+
+const requireNoAuth = (to, from, next) => {
+    let user = auth.currentUser
+    if (user) {
+        next({ name: 'Chatroom' })
+    } else {
+        next()
+    }
+}
 
 const routes = [
     {
@@ -26,12 +35,14 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: () => import('../views/Auth/Login.vue')
+        component: () => import('../views/Auth/Login.vue'),
+        beforeEnter: requireNoAuth
     },
     {
         path: '/signup',
         name: 'Signup',
-        component: () => import('../views/Auth/Signup.vue')
+        component: () => import('../views/Auth/Signup.vue'),
+        beforeEnter: requireNoAuth
     }
 ]
 
