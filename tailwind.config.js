@@ -5,7 +5,9 @@ module.exports = {
         "./src/**/*.{vue,js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            'maxmd': {'max': '767px'},
+        },
     },
     plugins: [
         require('@tailwindcss/forms')        

@@ -1,11 +1,21 @@
+<template>
+    <div class="flex flex-col h-screen">
+        <NavBar />
+
+        <router-view />
+    </div>
+
+</template>
+
 <script>
+import NavBar from './components/NavBar.vue';
+
+export default {
+    components: { NavBar },
+
+}
 
 </script>
-
-<template>
-
-    <router-view />
-</template>
 
 <style>
 #app {
@@ -14,6 +24,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>

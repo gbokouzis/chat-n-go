@@ -10,12 +10,14 @@ const login = async (email, password) => {
     error.value = null
 
     try {
-        const res = await signInWithEmailAndPassword(auth, email, password)
-        if (!res) {
+        const user = await signInWithEmailAndPassword(auth, email, password)
+        if (!user) {
             throw new Error('Could not complete login')
         }
         error.value = null   
         isLoading.value = false
+
+        return user
     } catch (err) {
         // console.log(err.message)
         error.value = err.message

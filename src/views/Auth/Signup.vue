@@ -93,11 +93,13 @@
   
 <script>
 import { ref } from "vue"
+import { useRouter } from 'vue-router'
 import useSignup from "../../composables/useSignup"
 
 export default {
     setup() {
         const { error, isLoading, signup } = useSignup()
+        const router = useRouter()
 
         const displayName = ref('')
         const email = ref('')
@@ -105,6 +107,9 @@ export default {
         
         const handleSubmit = async () => {
             await signup(displayName.value, email.value, password.value)
+            if (!error.value) {
+                router.push({ name: 'Chatroom' })
+            }
         }
         
         return { error, isLoading, displayName, email, password, handleSubmit }

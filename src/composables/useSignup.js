@@ -10,8 +10,8 @@ const signup = async (displayName, email, password) => {
     error.value = null
 
     try {
-        const res = await createUserWithEmailAndPassword(auth, email, password)
-        if (!res) {
+        const newUser = await createUserWithEmailAndPassword(auth, email, password)
+        if (!newUser) {
            throw new Error('Could not complete signup')
         }
         
@@ -19,13 +19,15 @@ const signup = async (displayName, email, password) => {
             displayName: displayName
         })
         
-        console.log(res.user)
+        // console.log()
 
         error.value = null
-        isLoading.value = false        
+        isLoading.value = false    
+        
+        return newUser
     } 
     catch (err) {
-        // console.log(err.message)
+        console.log(err.message)
         error.value = err.message
         isLoading.value = false        
     }
