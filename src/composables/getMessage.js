@@ -13,7 +13,7 @@ const getMessage = () => {
         console.log('test snapshot')
         let resalts = []
         snapshot.docs.forEach(doc => {
-            resalts.push({ ...doc.data(), id: doc.id })
+            doc.data().createdAt && resalts.push({ ...doc.data(), id: doc.id })
         })
         messages.value = resalts
         error.value = null

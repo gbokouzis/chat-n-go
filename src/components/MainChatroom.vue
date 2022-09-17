@@ -9,7 +9,7 @@
             class="pt-2"    
         >
             <div v-if="message.email === user.email">
-                <span class="flex justify-end px-1 pt-2 text-sm text-gray-500">
+                <span v-if="message.isTheSameUser === false" class="flex justify-end px-1 pt-2 text-sm text-gray-500">
                     {{ message.createdAt }}
                 </span>
                 <div class="flex flex-row justify-end">
@@ -33,17 +33,17 @@
             </div>
 
             <div v-else>
-                <span class="flex justify-start px-1 pt-2 text-sm text-gray-500">
+                <span v-if="message.isTheSameUser === false" class="flex justify-start px-1 pt-2 text-sm text-gray-500">
                     {{ message.createdAt }}
                 </span>
                 <div  
                     class="flex flex-row justify-start items-center"
                 >
                     <div class="w-8 h-8 relative flex flex-shrink-0 mr-4">
-                        <img class="shadow-md rounded-full w-full h-full object-cover"
+                            <img v-if="message.isTheSameUser === false" class="shadow-md rounded-full w-full h-full object-cover"
                                 src="https://randomuser.me/api/portraits/women/33.jpg"
                                 alt=""
-                        />
+                            />
                     </div>
                     <div class="messages text-sm text-gray-700 grid grid-flow-row gap-2">
                         <div class="flex items-center group">
@@ -138,9 +138,17 @@ export default {
 
         const formattedMessages = computed(() => {
             if (messages.value) {
+                let previousEmail = null
                 return messages.value.map(doc => {
+                    let isTheSameUser = doc.email === previousEmail ? true : false
+                    previousEmail = doc.email
+
                     let timeFromNow = formatDistanceToNow(doc.createdAt.toDate())
-                    return { ...doc, createdAt: timeFromNow }
+                    return { 
+                        ...doc, 
+                        createdAt: timeFromNow, 
+                        isTheSameUser: isTheSameUser 
+                    }
                 })
             }
         })
