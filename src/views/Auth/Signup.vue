@@ -16,35 +16,46 @@
                     </a> -->
                 </p>
             </div>
-            <form @submit.prevent="handleSubmit" 
+            <vee-form @submit.prevent="handleSubmit" :validation-schema="schema"
                 class="mt-8 space-y-6"
             >
                 <input type="hidden" name="remember" value="true" />
                 <div class="-space-y-px rounded-md shadow-sm">
                     <div class="">
                         <label for="username" class="sr-only">Username</label>
-                        <input v-model="displayName"
-                            id="username" name="email" type="username" autocomplete="name" required="" 
+                        <vee-field v-model="displayName"
+                            id="username" name="username" type="text" autocomplete="name" required="" 
                             class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
                             placeholder="Username" 
                         />
+                        <ErrorMessage class="text-red-700" name="username" />
                     </div>
                     <div class="pt-4">
                         <label for="email-address" class="sr-only">Email address</label>
-                        <input v-model="email"
+                        <vee-field v-model="email"
                             id="email-address" name="email" type="email" autocomplete="email" required="" 
                             class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
                             placeholder="Email address" 
                         />
+                        <ErrorMessage class="text-red-700" name="email" />
                     </div>
                     <div class="pt-4">
                         <label for="password" class="sr-only">Password</label>
-                        <input v-model="password"
+                        <vee-field v-model="password"
                             id="password" name="password" type="password" autocomplete="current-password" required="" 
                             class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
                             placeholder="Password" 
                         />
                     </div>
+                    <div class="pt-4">
+                        <label for="confirm_password" class="sr-only">Password</label>
+                        <vee-field v-model="confirm_password"
+                            id="confirm_password" name="confirm_password" type="password" autocomplete="current-password" required="" 
+                            class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
+                            placeholder="Password" 
+                        />
+                    </div>
+                    <ErrorMessage class="text-red-700" name="confirm_password" />
                 </div>
         
                 <div class="flex items-center justify-between">
@@ -86,7 +97,7 @@
                         {{ error }}
                     </div>
                 </div>
-            </form>
+            </vee-form>
         </div>
     </div>
 </template>
@@ -104,6 +115,13 @@ export default {
         const displayName = ref('')
         const email = ref('')
         const password = ref('')
+
+        const schema = {
+        username: 'required|min:3|max:50|alpha_spaces',
+        email: 'required|min:3|max:100|email',
+        password: 'required|min:3|max:32',
+        confirm_password: 'passwords_mismatch:@password',
+      }
         
         const handleSubmit = async () => {
             await signup(displayName.value, email.value, password.value)
@@ -112,7 +130,7 @@ export default {
             }
         }
         
-        return { error, isLoading, displayName, email, password, handleSubmit }
+        return { error, isLoading, displayName, email, password, handleSubmit, schema }
     }
 }
 
