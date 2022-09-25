@@ -17,26 +17,28 @@
                     </a> -->
                 </p>
             </div>
-            <form @submit.prevent="handleSubmit" 
+            <vee-form @submit.prevent="handleSubmit" :validation-schema="schema"
                 class="mt-8 space-y-6"
             >
                 <input type="hidden" name="remember" value="true" />
                 <div class="-space-y-px rounded-md shadow-sm">
                     <div class="">
                         <label for="email-address" class="sr-only">Email address</label>
-                        <input v-model="email" 
+                        <vee-field v-model="email" 
                             id="email-address" name="email" type="email" autocomplete="email" required="" 
                             class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
                             placeholder="Email address" 
                         />
+                        <ErrorMessage class="text-red-700" name="email" />
                     </div>
                     <div class="pt-4">
                         <label for="password" class="sr-only">Password</label>
-                        <input v-model="password" 
+                        <vee-field v-model="password" 
                             id="password" name="password" type="password" autocomplete="current-password" required="" 
                             class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" 
                             placeholder="Password" 
                         />
+                        <ErrorMessage class="text-red-700" name="password" />
                     </div>
                 </div>
         
@@ -79,7 +81,7 @@
                         {{ error }}
                     </div>
                 </div>
-            </form>
+            </vee-form>
         </div>
     </div>
 </template>
@@ -97,6 +99,11 @@ export default {
         const email = ref('')
         const password = ref('')
         
+        const schema = {
+            email: 'required|min:3|max:100|email',
+            password: 'required|min:3|max:32',
+        }
+
         const handleSubmit = async () => {
             await login(email.value, password.value)
             if (!error.value) {
@@ -104,7 +111,7 @@ export default {
             }
         }
         
-        return { error, isLoading, email, password, handleSubmit }
+        return { error, isLoading, email, password, handleSubmit, schema }
     }
 }
 

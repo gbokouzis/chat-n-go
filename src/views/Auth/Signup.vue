@@ -117,11 +117,11 @@ export default {
         const password = ref('')
 
         const schema = {
-        username: 'required|min:3|max:50|alpha_spaces',
-        email: 'required|min:3|max:100|email',
-        password: 'required|min:3|max:32',
-        confirm_password: 'passwords_mismatch:@password',
-      }
+            username: 'required|min:3|max:50|alpha_spaces',
+            email: 'required|min:3|max:100|email',
+            password: 'required|min:3|max:32',
+            confirm_password: 'passwords_mismatch:@password',
+        }
         
         const handleSubmit = async () => {
             await signup(displayName.value, email.value, password.value)
