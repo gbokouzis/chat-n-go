@@ -16,7 +16,7 @@
                     </a> -->
                 </p>
             </div>
-            <vee-form @submit.prevent="handleSubmit" :validation-schema="schema"
+            <vee-form @submit="handleSubmit" :validation-schema="schema"
                 class="mt-8 space-y-6"
             >
                 <input type="hidden" name="remember" value="true" />
@@ -117,11 +117,11 @@ export default {
         const password = ref('')
 
         const schema = {
-            username: 'required|min:3|max:50|alpha_spaces',
-            email: 'required|min:3|max:100|email',
-            password: 'required|min:3|max:32',
-            confirm_password: 'passwords_mismatch:@password',
-        }
+        username: 'required|min:3|max:50|alpha_spaces',
+        email: 'required|min:3|max:100|email',
+        password: 'required|min:3|max:32',
+        confirm_password: 'passwords_mismatch:@password',
+      }
         
         const handleSubmit = async () => {
             await signup(displayName.value, email.value, password.value)
